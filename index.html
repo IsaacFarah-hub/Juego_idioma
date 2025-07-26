@@ -1,0 +1,1286 @@
+<!DOCTYPE html>
+<html lang="it">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Impara lo Spagnolo - Giochi Interattivi</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <style>
+        :root {
+            --primary: #3498db;
+            --secondary: #2ecc71;
+            --accent: #e74c3c;
+            --light: #ecf0f1;
+            --dark: #2c3e50;
+            --shadow: 0 4px 6px rgba(0,0,0,0.1);
+            --card-bg: #ffffff;
+        }
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background: linear-gradient(135deg, #f5f7fa 0%, #c3cfe2 100%);
+            min-height: 100vh;
+            padding: 20px;
+            color: var(--dark);
+            line-height: 1.6;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            padding: 20px;
+            background-color: var(--card-bg);
+            border-radius: 15px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        header::before {
+            content: "";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 5px;
+            background: linear-gradient(90deg, #ff6b6b, #4ecdc4, #556270);
+        }
+        
+        .logo {
+            font-size: 28px;
+            font-weight: bold;
+            color: var(--primary);
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .logo span {
+            color: var(--secondary);
+        }
+        
+        .logo i {
+            font-size: 32px;
+            color: #e74c3c;
+        }
+        
+        .translate-btn {
+            background-color: var(--accent);
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-weight: bold;
+            transition: all 0.3s ease;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 6px rgba(231, 76, 60, 0.3);
+        }
+        
+        .translate-btn:hover {
+            background-color: #c0392b;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 8px rgba(231, 76, 60, 0.4);
+        }
+        
+        .main-title {
+            text-align: center;
+            margin-bottom: 40px;
+            color: var(--dark);
+            padding: 0 20px;
+        }
+        
+        .main-title h1 {
+            font-size: 42px;
+            margin-bottom: 15px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
+        }
+        
+        .main-title p {
+            font-size: 20px;
+            color: #555;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .games-container {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 30px;
+            margin-bottom: 40px;
+        }
+        
+        .game-card {
+            background: var(--card-bg);
+            border-radius: 15px;
+            overflow: hidden;
+            box-shadow: var(--shadow);
+            transition: all 0.4s ease;
+            cursor: pointer;
+            border: 2px solid transparent;
+            position: relative;
+        }
+        
+        .game-card:hover {
+            transform: translateY(-10px);
+            box-shadow: 0 12px 20px rgba(0,0,0,0.15);
+            border-color: var(--primary);
+        }
+        
+        .game-icon {
+            height: 160px;
+            background: linear-gradient(135deg, var(--primary), var(--secondary));
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-size: 60px;
+            color: white;
+        }
+        
+        .game-content {
+            padding: 25px;
+        }
+        
+        .game-content h3 {
+            margin-bottom: 12px;
+            color: var(--dark);
+            font-size: 22px;
+        }
+        
+        .game-content p {
+            color: #666;
+            font-size: 16px;
+            margin-bottom: 15px;
+            min-height: 60px;
+        }
+        
+        .level-indicator {
+            display: inline-block;
+            padding: 6px 15px;
+            background-color: var(--light);
+            border-radius: 20px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        
+        .level-a1 {
+            background-color: #d5f5e3;
+            color: #27ae60;
+        }
+        
+        .level-a2 {
+            background-color: #d6eaf8;
+            color: #2980b9;
+        }
+        
+        .game-section {
+            background: var(--card-bg);
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+            margin-bottom: 30px;
+            display: none;
+            animation: fadeIn 0.5s ease;
+        }
+        
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+        
+        .game-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 25px;
+            padding-bottom: 15px;
+            border-bottom: 2px solid #eee;
+        }
+        
+        .back-btn {
+            background-color: var(--light);
+            border: none;
+            padding: 10px 20px;
+            border-radius: 50px;
+            cursor: pointer;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+            font-weight: 600;
+        }
+        
+        .back-btn:hover {
+            background-color: #d6eaf8;
+            transform: translateX(-5px);
+        }
+        
+        .game-body {
+            min-height: 350px;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+        
+        .flashcard {
+            width: 100%;
+            max-width: 500px;
+            height: 320px;
+            margin: 0 auto;
+            perspective: 1000px;
+            cursor: pointer;
+        }
+        
+        .flashcard-inner {
+            position: relative;
+            width: 100%;
+            height: 100%;
+            text-align: center;
+            transition: transform 0.6s;
+            transform-style: preserve-3d;
+        }
+        
+        .flashcard.flipped .flashcard-inner {
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard-front, .flashcard-back {
+            position: absolute;
+            width: 100%;
+            height: 100%;
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            border-radius: 15px;
+            padding: 30px;
+            box-shadow: var(--shadow);
+        }
+        
+        .flashcard-front {
+            background: linear-gradient(135deg, #3498db, #1a5276);
+            color: white;
+        }
+        
+        .flashcard-back {
+            background: linear-gradient(135deg, #2ecc71, #27ae60);
+            color: white;
+            transform: rotateY(180deg);
+        }
+        
+        .flashcard h2 {
+            font-size: 36px;
+            margin-bottom: 20px;
+            font-weight: 600;
+        }
+        
+        .flashcard p {
+            font-size: 20px;
+            margin-bottom: 30px;
+            opacity: 0.9;
+        }
+        
+        .match-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            max-width: 800px;
+            margin: 0 auto;
+        }
+        
+        .match-column {
+            display: flex;
+            flex-direction: column;
+            gap: 20px;
+        }
+        
+        .match-item {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            text-align: center;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+            min-height: 80px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        
+        .match-item:hover {
+            background: #d6eaf8;
+            transform: scale(1.02);
+        }
+        
+        .match-item.matched {
+            background: #d5f5e3;
+            cursor: default;
+            transform: scale(0.98);
+        }
+        
+        .quiz-container {
+            max-width: 700px;
+            margin: 0 auto;
+        }
+        
+        .quiz-question {
+            font-size: 26px;
+            margin-bottom: 40px;
+            text-align: center;
+            font-weight: bold;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+        }
+        
+        .quiz-options {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        
+        .quiz-option {
+            background: var(--light);
+            padding: 20px;
+            border-radius: 12px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+        }
+        
+        .quiz-option:hover {
+            background: #d6eaf8;
+            transform: translateY(-3px);
+        }
+        
+        .quiz-option.selected {
+            background: #d6eaf8;
+            border-left: 6px solid var(--primary);
+        }
+        
+        .result {
+            text-align: center;
+            font-size: 26px;
+            font-weight: bold;
+            margin-top: 30px;
+            padding: 20px;
+            border-radius: 12px;
+            display: none;
+        }
+        
+        .result.correct {
+            background: #d5f5e3;
+            color: #27ae60;
+        }
+        
+        .result.incorrect {
+            background: #fadbd8;
+            color: #e74c3c;
+        }
+        
+        .btn {
+            background: var(--primary);
+            color: white;
+            border: none;
+            padding: 15px 30px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 18px;
+            font-weight: bold;
+            margin-top: 20px;
+            transition: all 0.3s ease;
+            display: inline-flex;
+            align-items: center;
+            gap: 10px;
+            box-shadow: 0 4px 8px rgba(52, 152, 219, 0.3);
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+            box-shadow: 0 6px 12px rgba(52, 152, 219, 0.4);
+        }
+        
+        .btn-check {
+            background: var(--secondary);
+            box-shadow: 0 4px 8px rgba(46, 204, 113, 0.3);
+        }
+        
+        .btn-check:hover {
+            background: #27ae60;
+            box-shadow: 0 6px 12px rgba(46, 204, 113, 0.4);
+        }
+        
+        .fill-blank {
+            font-size: 28px;
+            text-align: center;
+            margin-bottom: 40px;
+            padding: 20px;
+            background: #f8f9fa;
+            border-radius: 12px;
+            box-shadow: 0 4px 6px rgba(0,0,0,0.05);
+            line-height: 1.8;
+        }
+        
+        .blank {
+            display: inline-block;
+            min-width: 120px;
+            border-bottom: 3px solid var(--primary);
+            margin: 0 8px;
+            text-align: center;
+            padding-bottom: 8px;
+            font-weight: bold;
+        }
+        
+        .word-bank {
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 15px;
+            margin-top: 30px;
+            padding: 20px;
+        }
+        
+        .word-option {
+            background: var(--light);
+            padding: 15px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-size: 18px;
+            font-weight: 500;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.05);
+        }
+        
+        .word-option:hover {
+            background: #d6eaf8;
+            transform: translateY(-3px);
+        }
+        
+        .word-option.used {
+            opacity: 0.4;
+            cursor: default;
+            transform: none;
+        }
+        
+        .order-container {
+            max-width: 800px;
+            margin: 0 auto;
+            text-align: center;
+        }
+        
+        .sentence-builder {
+            min-height: 100px;
+            border: 2px dashed #3498db;
+            border-radius: 15px;
+            padding: 25px;
+            margin: 30px auto;
+            display: flex;
+            flex-wrap: wrap;
+            gap: 15px;
+            justify-content: center;
+            align-items: center;
+            background: #f8f9fa;
+        }
+        
+        .word-bubble {
+            background: #3498db;
+            color: white;
+            padding: 12px 25px;
+            border-radius: 30px;
+            cursor: pointer;
+            display: inline-block;
+            font-size: 20px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+            box-shadow: 0 3px 5px rgba(0,0,0,0.1);
+        }
+        
+        .word-bubble:hover {
+            background: #2980b9;
+            transform: translateY(-3px);
+        }
+        
+        .word-options-container {
+            display: flex;
+            flex-wrap: wrap;
+            justify-content: center;
+            gap: 15px;
+            margin-top: 20px;
+            padding: 20px;
+        }
+        
+        .reset-btn {
+            background: #e74c3c;
+            color: white;
+            border: none;
+            padding: 12px 25px;
+            border-radius: 50px;
+            cursor: pointer;
+            font-size: 16px;
+            font-weight: 600;
+            margin-top: 15px;
+            display: inline-flex;
+            align-items: center;
+            gap: 8px;
+            transition: all 0.3s ease;
+        }
+        
+        .reset-btn:hover {
+            background: #c0392b;
+            transform: translateY(-3px);
+        }
+        
+        .progress-container {
+            background: var(--light);
+            border-radius: 15px;
+            padding: 25px;
+            margin-top: 40px;
+            box-shadow: var(--shadow);
+        }
+        
+        .progress-title {
+            margin-bottom: 20px;
+            text-align: center;
+            font-weight: bold;
+            font-size: 20px;
+            color: var(--dark);
+        }
+        
+        .progress-bar {
+            height: 25px;
+            background: #e0e0e0;
+            border-radius: 12px;
+            overflow: hidden;
+            position: relative;
+        }
+        
+        .progress-fill {
+            height: 100%;
+            background: linear-gradient(90deg, var(--primary), var(--secondary));
+            width: 0%;
+            transition: width 0.8s ease;
+        }
+        
+        .progress-text {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            transform: translate(-50%, -50%);
+            color: white;
+            font-weight: bold;
+            text-shadow: 0 1px 2px rgba(0,0,0,0.3);
+        }
+        
+        footer {
+            text-align: center;
+            padding: 30px;
+            color: #666;
+            font-size: 16px;
+            margin-top: 50px;
+            border-top: 1px solid #eee;
+        }
+        
+        @media (max-width: 768px) {
+            .games-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .match-container {
+                grid-template-columns: 1fr;
+            }
+            
+            .quiz-options {
+                grid-template-columns: 1fr;
+            }
+            
+            .main-title h1 {
+                font-size: 32px;
+            }
+            
+            .fill-blank {
+                font-size: 22px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <header>
+            <div class="logo">
+                <i class="fas fa-language"></i>
+                <div>Impara<span>Spagnolo</span></div>
+            </div>
+            <button class="translate-btn" id="translateBtn">
+                <i class="fas fa-exchange-alt"></i>
+                <span id="btnText">Traduci in Spagnolo</span>
+            </button>
+        </header>
+        
+        <section class="main-title">
+            <h1>Impara lo Spagnolo con Giochi Interattivi</h1>
+            <p>Migliora il tuo spagnolo dal livello A1 ad A2 con i nostri giochi basati sulle espressioni più comuni. Scegli un gioco per iniziare il tuo viaggio!</p>
+        </section>
+        
+        <div class="games-container" id="gamesMenu">
+            <!-- Game cards will be added dynamically -->
+        </div>
+        
+        <!-- Game sections -->
+        <section class="game-section" id="game1">
+            <div class="game-header">
+                <h2>Flashcards delle Espressioni</h2>
+                <button class="back-btn" onclick="showGameMenu()">
+                    <i class="fas fa-arrow-left"></i>
+                    Torna ai Giochi
+                </button>
+            </div>
+            <div class="game-body">
+                <div class="flashcard" id="flashcard" onclick="flipCard()">
+                    <div class="flashcard-inner">
+                        <div class="flashcard-front">
+                            <h2 id="cardFront">Ciao, come stai?</h2>
+                            <p>Clicca per vedere la traduzione</p>
+                        </div>
+                        <div class="flashcard-back">
+                            <h2 id="cardBack">Hola, ¿cómo estás?</h2>
+                            <p>Clicca per la prossima carta</p>
+                        </div>
+                    </div>
+                </div>
+                <div style="text-align: center; margin-top: 30px;">
+                    <button class="btn" onclick="nextCard()">
+                        <i class="fas fa-arrow-right"></i>
+                        Prossima Espressione
+                    </button>
+                </div>
+            </div>
+        </section>
+        
+        <section class="game-section" id="game2">
+            <div class="game-header">
+                <h2>Abbina le Espressioni</h2>
+                <button class="back-btn" onclick="showGameMenu()">
+                    <i class="fas fa-arrow-left"></i>
+                    Torna ai Giochi
+                </button>
+            </div>
+            <div class="game-body">
+                <div class="match-container">
+                    <div class="match-column" id="italianColumn">
+                        <!-- Italian items -->
+                    </div>
+                    <div class="match-column" id="spanishColumn">
+                        <!-- Spanish items -->
+                    </div>
+                </div>
+                <div class="result" id="matchResult"></div>
+            </div>
+        </section>
+        
+        <section class="game-section" id="game3">
+            <div class="game-header">
+                <h2>Quiz delle Espressioni</h2>
+                <button class="back-btn" onclick="showGameMenu()">
+                    <i class="fas fa-arrow-left"></i>
+                    Torna ai Giochi
+                </button>
+            </div>
+            <div class="game-body">
+                <div class="quiz-container">
+                    <div class="quiz-question" id="quizQuestion">Come si dice "Buongiorno" in spagnolo?</div>
+                    <div class="quiz-options" id="quizOptions">
+                        <!-- Options will be added dynamically -->
+                    </div>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-check" onclick="checkAnswer()">
+                            <i class="fas fa-check"></i>
+                            Controlla Risposta
+                        </button>
+                        <button class="btn" onclick="nextQuestion()">
+                            <i class="fas fa-arrow-right"></i>
+                            Prossima Domanda
+                        </button>
+                    </div>
+                    <div class="result" id="quizResult"></div>
+                </div>
+            </div>
+        </section>
+        
+        <section class="game-section" id="game4">
+            <div class="game-header">
+                <h2>Completa la Frase</h2>
+                <button class="back-btn" onclick="showGameMenu()">
+                    <i class="fas fa-arrow-left"></i>
+                    Torna ai Giochi
+                </button>
+            </div>
+            <div class="game-body">
+                <div class="fill-blank" id="fillBlank">
+                    <!-- Sentence with blank -->
+                </div>
+                <div class="word-bank" id="wordBank">
+                    <!-- Word options -->
+                </div>
+                <div style="text-align: center; margin-top: 20px;">
+                    <button class="btn btn-check" onclick="checkFillBlank()">
+                        <i class="fas fa-check"></i>
+                        Controlla
+                    </button>
+                    <button class="btn" onclick="nextSentence()">
+                        <i class="fas fa-arrow-right"></i>
+                        Prossima Frase
+                    </button>
+                </div>
+                <div class="result" id="fillResult"></div>
+            </div>
+        </section>
+        
+        <section class="game-section" id="game5">
+            <div class="game-header">
+                <h2>Ordina la Frase</h2>
+                <button class="back-btn" onclick="showGameMenu()">
+                    <i class="fas fa-arrow-left"></i>
+                    Torna ai Giochi
+                </button>
+            </div>
+            <div class="game-body">
+                <div class="order-container">
+                    <div class="sentence-builder" id="sentenceBuilder">
+                        <!-- Selected words will appear here -->
+                    </div>
+                    <div class="word-options-container" id="wordOptions">
+                        <!-- Word parts -->
+                    </div>
+                    <button class="reset-btn" onclick="resetOrder()">
+                        <i class="fas fa-redo"></i>
+                        Reinizia
+                    </button>
+                    <div style="text-align: center; margin-top: 30px;">
+                        <button class="btn btn-check" onclick="checkOrder()">
+                            <i class="fas fa-check"></i>
+                            Controlla Ordine
+                        </button>
+                        <button class="btn" onclick="nextOrderSentence()">
+                            <i class="fas fa-arrow-right"></i>
+                            Prossima Frase
+                        </button>
+                    </div>
+                    <div class="result" id="orderResult"></div>
+                </div>
+            </div>
+        </section>
+        
+        <div class="progress-container">
+            <div class="progress-title">Il tuo progresso nell'apprendimento</div>
+            <div class="progress-bar">
+                <div class="progress-fill" id="progressFill"></div>
+                <div class="progress-text" id="progressText">0% Completato</div>
+            </div>
+        </div>
+        
+        <footer>
+            <p>© 2023 ImparaSpagnolo - Giochi Interattivi per Apprendere lo Spagnolo | Livelli A1-A2</p>
+        </footer>
+    </div>
+
+    <script>
+        // Data for games (Italian to Spanish)
+        const expressions = [
+            { it: "Ciao, come stai?", es: "Hola, ¿cómo estás?" },
+            { it: "Mi chiamo...", es: "Me llamo..." },
+            { it: "Grazie mille", es: "Muchas gracias" },
+            { it: "Prego", es: "De nada" },
+            { it: "Quanti anni hai?", es: "¿Cuántos años tienes?" },
+            { it: "Di dove sei?", es: "¿De dónde eres?" },
+            { it: "Mi piace molto", es: "Me gusta mucho" },
+            { it: "Non capisco", es: "No entiendo" },
+            { it: "Puoi aiutarmi?", es: "¿Puedes ayudarme?" },
+            { it: "Quanto costa?", es: "¿Cuánto cuesta?" },
+            { it: "Dov'è il bagno?", es: "¿Dónde está el baño?" },
+            { it: "Buon appetito!", es: "¡Buen provecho!" },
+            { it: "Mi dispiace", es: "Lo siento" },
+            { it: "Non importa", es: "No importa" },
+            { it: "Arrivederci", es: "Adiós" }
+        ];
+        
+        const quizQuestions = [
+            {
+                question: "Come si dice 'Buongiorno' in spagnolo?",
+                options: ["Buenos días", "Buenas noches", "Buenas tardes", "Hola"],
+                answer: 0
+            },
+            {
+                question: "Qual è la traduzione di 'Mi piace'?",
+                options: ["Me gusta", "Me encanta", "Me importa", "Me duele"],
+                answer: 0
+            },
+            {
+                question: "Come chiedi 'Dove abiti?' in spagnolo?",
+                options: ["¿Dónde vives?", "¿Dónde estás?", "¿Dónde trabajas?", "¿Dónde está tu casa?"],
+                answer: 0
+            },
+            {
+                question: "Come si dice 'Per favore' in spagnolo?",
+                options: ["Gracias", "Por favor", "De nada", "Perdón"],
+                answer: 1
+            },
+            {
+                question: "Qual è la traduzione corretta di 'Non parlo spagnolo'?",
+                options: ["No entiendo español", "Hablo español", "No hablo español", "Estoy aprendiendo español"],
+                answer: 2
+            }
+        ];
+        
+        const fillSentences = [
+            { sentence: "Yo ___ al parque todos los domingos.", word: "voy", options: ["voy", "soy", "tengo", "hago"] },
+            { sentence: "Ella ___ un libro ahora mismo.", word: "está leyendo", options: ["lee", "leyendo", "está leyendo", "leer"] },
+            { sentence: "Nosotros ___ pizza para cenar ayer.", word: "comimos", options: ["comemos", "come", "comimos", "comiendo"] },
+            { sentence: "Ellos ___ al cine esta noche.", word: "van", options: ["va", "vamos", "van", "ir"] },
+            { sentence: "Él ___ hablar tres idiomas.", word: "puede", options: ["puede", "podría", "debe", "quiere"] }
+        ];
+        
+        const orderSentences = [
+            { parts: ["Me", "gusta", "jugar", "al", "fútbol"], correct: "Me gusta jugar al fútbol" },
+            { parts: ["Este", "es", "mi", "libro"], correct: "Este es mi libro" },
+            { parts: ["¿Dónde", "vives", "?"], correct: "¿Dónde vives?" },
+            { parts: ["El", "libro", "está", "en", "la", "mesa"], correct: "El libro está en la mesa" },
+            { parts: ["¿Hablas", "español", "?"], correct: "¿Hablas español?" }
+        ];
+        
+        // Application state
+        let currentLanguage = 'it';
+        let currentCardIndex = 0;
+        let currentQuizIndex = 0;
+        let selectedOption = null;
+        let currentFillIndex = 0;
+        let currentOrderIndex = 0;
+        let matchedPairs = 0;
+        let progress = 0;
+        let selectedWords = [];
+        let wordOptions = [];
+        
+        // DOM elements
+        const translateBtn = document.getElementById('translateBtn');
+        const btnText = document.getElementById('btnText');
+        const gamesMenu = document.getElementById('gamesMenu');
+        const gameSections = document.querySelectorAll('.game-section');
+        const progressFill = document.getElementById('progressFill');
+        const progressText = document.getElementById('progressText');
+        
+        // Initialization
+        document.addEventListener('DOMContentLoaded', function() {
+            renderGameCards();
+            showGameMenu();
+            setupFlashcards();
+            setupMatchingGame();
+            setupQuiz();
+            setupFillBlank();
+            setupOrderGame();
+            updateProgress();
+            
+            // Event for translation button
+            translateBtn.addEventListener('click', toggleTranslation);
+        });
+        
+        // Function to show game menu
+        function showGameMenu() {
+            gameSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            gamesMenu.style.display = 'grid';
+        }
+        
+        // Function to show a specific game
+        function showGame(gameId) {
+            gamesMenu.style.display = 'none';
+            gameSections.forEach(section => {
+                section.style.display = 'none';
+            });
+            document.getElementById(gameId).style.display = 'block';
+            
+            // Increase progress when starting a new game
+            if (progress < 100) {
+                progress += 15;
+                if (progress > 100) progress = 100;
+                updateProgress();
+            }
+        }
+        
+        // Function to create game cards
+        function renderGameCards() {
+            const gamesData = [
+                { id: 'game1', title: "Flashcards delle Espressioni", desc: "Impara le espressioni comuni con flashcards interattive", icon: "📚", level: "A1" },
+                { id: 'game2', title: "Abbina le Espressioni", desc: "Abbina le espressioni italiane con quelle spagnole", icon: "🔍", level: "A1" },
+                { id: 'game3', title: "Quiz delle Espressioni", desc: "Metti alla prova le tue conoscenze con domande a scelta multipla", icon: "❓", level: "A2" },
+                { id: 'game4', title: "Completa la Frase", desc: "Completa le frasi in spagnolo con le parole mancanti", icon: "✏️", level: "A2" },
+                { id: 'game5', title: "Ordina la Frase", desc: "Metti in ordine le parole per formare frasi corrette", icon: "🔠", level: "A2" }
+            ];
+            
+            gamesMenu.innerHTML = '';
+            
+            gamesData.forEach(game => {
+                const gameCard = document.createElement('div');
+                gameCard.className = 'game-card';
+                gameCard.innerHTML = `
+                    <div class="game-icon">${game.icon}</div>
+                    <div class="game-content">
+                        <h3>${game.title}</h3>
+                        <p>${game.desc}</p>
+                        <span class="level-indicator level-${game.level.toLowerCase()}">Livello ${game.level}</span>
+                    </div>
+                `;
+                gameCard.addEventListener('click', () => showGame(game.id));
+                gamesMenu.appendChild(gameCard);
+            });
+        }
+        
+        // Function to translate the page
+        function toggleTranslation() {
+            currentLanguage = currentLanguage === 'it' ? 'es' : 'it';
+            
+            // Update button text
+            btnText.textContent = currentLanguage === 'it' ? "Traduci in Spagnolo" : "Traduci in Italiano";
+            
+            // Update main titles
+            document.querySelector('.main-title h1').textContent = currentLanguage === 'it' ? 
+                "Impara lo Spagnolo con Giochi Interattivi" : 
+                "Aprende Español con Juegos Interactivos";
+                
+            document.querySelector('.main-title p').textContent = currentLanguage === 'it' ? 
+                "Migliora il tuo spagnolo dal livello A1 ad A2 con i nostri giochi basati sulle espressioni più comuni. Scegli un gioco per iniziare il tuo viaggio!" : 
+                "Mejora tu español desde el nivel A1 hasta A2 con nuestros juegos basados en las expresiones más comunes. ¡Elige un juego para comenzar tu viaje!";
+        }
+        
+        // Setup Flashcards
+        function setupFlashcards() {
+            currentCardIndex = 0;
+            showCard();
+        }
+        
+        function showCard() {
+            const card = expressions[currentCardIndex];
+            document.getElementById('cardFront').textContent = card.it;
+            document.getElementById('cardBack').textContent = card.es;
+            document.getElementById('flashcard').classList.remove('flipped');
+        }
+        
+        function flipCard() {
+            document.getElementById('flashcard').classList.toggle('flipped');
+        }
+        
+        function nextCard() {
+            currentCardIndex = (currentCardIndex + 1) % expressions.length;
+            showCard();
+        }
+        
+        // Setup Matching Game
+        function setupMatchingGame() {
+            matchedPairs = 0;
+            document.getElementById('matchResult').style.display = 'none';
+            
+            // Get 5 random expressions
+            const shuffled = [...expressions].sort(() => 0.5 - Math.random()).slice(0, 5);
+            const italianColumn = document.getElementById('italianColumn');
+            const spanishColumn = document.getElementById('spanishColumn');
+            
+            italianColumn.innerHTML = '';
+            spanishColumn.innerHTML = '';
+            
+            shuffled.forEach((exp, index) => {
+                // Create Italian item
+                const italianItem = document.createElement('div');
+                italianItem.className = 'match-item';
+                italianItem.textContent = exp.it;
+                italianItem.dataset.index = index;
+                italianColumn.appendChild(italianItem);
+                
+                // Create Spanish item
+                const spanishItem = document.createElement('div');
+                spanishItem.className = 'match-item';
+                spanishItem.textContent = exp.es;
+                spanishItem.dataset.index = index;
+                spanishColumn.appendChild(spanishItem);
+                
+                // Add event listeners
+                italianItem.addEventListener('click', () => selectItem(italianItem));
+                spanishItem.addEventListener('click', () => selectItem(spanishItem));
+            });
+        }
+        
+        let selectedItem = null;
+        
+        function selectItem(item) {
+            if (item.classList.contains('matched')) return;
+            
+            if (selectedItem === null) {
+                // First item selected
+                selectedItem = item;
+                item.style.backgroundColor = '#d6eaf8';
+            } else {
+                // Second item selected
+                if (selectedItem.dataset.index === item.dataset.index) {
+                    // Correct match
+                    selectedItem.classList.add('matched');
+                    item.classList.add('matched');
+                    selectedItem.style.backgroundColor = '';
+                    selectedItem = null;
+                    
+                    matchedPairs++;
+                    if (matchedPairs === 5) {
+                        const resultElement = document.getElementById('matchResult');
+                        resultElement.textContent = "Completato! Tutte le corrispondenze corrette!";
+                        resultElement.style.display = 'block';
+                        resultElement.classList.add('correct');
+                        resultElement.classList.remove('incorrect');
+                    }
+                } else {
+                    // Incorrect match
+                    item.style.backgroundColor = '#fadbd8';
+                    setTimeout(() => {
+                        selectedItem.style.backgroundColor = '';
+                        item.style.backgroundColor = '';
+                        selectedItem = null;
+                    }, 500);
+                }
+            }
+        }
+        
+        // Setup Quiz
+        function setupQuiz() {
+            currentQuizIndex = 0;
+            selectedOption = null;
+            document.getElementById('quizResult').style.display = 'none';
+            showQuestion();
+        }
+        
+        function showQuestion() {
+            const quiz = quizQuestions[currentQuizIndex];
+            document.getElementById('quizQuestion').textContent = quiz.question;
+            
+            const optionsContainer = document.getElementById('quizOptions');
+            optionsContainer.innerHTML = '';
+            
+            quiz.options.forEach((option, index) => {
+                const optionElement = document.createElement('div');
+                optionElement.className = 'quiz-option';
+                optionElement.textContent = option;
+                optionElement.dataset.index = index;
+                optionElement.addEventListener('click', () => {
+                    // Remove previous selection
+                    document.querySelectorAll('.quiz-option').forEach(opt => {
+                        opt.classList.remove('selected');
+                    });
+                    // Select current option
+                    optionElement.classList.add('selected');
+                    selectedOption = index;
+                });
+                optionsContainer.appendChild(optionElement);
+            });
+        }
+        
+        function checkAnswer() {
+            if (selectedOption === null) return;
+            
+            const quiz = quizQuestions[currentQuizIndex];
+            const resultElement = document.getElementById('quizResult');
+            
+            if (selectedOption === quiz.answer) {
+                resultElement.textContent = "Corretto! Ottimo lavoro!";
+                resultElement.className = "result correct";
+            } else {
+                resultElement.textContent = "Sbagliato. La risposta corretta è: " + quiz.options[quiz.answer];
+                resultElement.className = "result incorrect";
+            }
+            
+            resultElement.style.display = 'block';
+        }
+        
+        function nextQuestion() {
+            currentQuizIndex = (currentQuizIndex + 1) % quizQuestions.length;
+            selectedOption = null;
+            document.getElementById('quizResult').style.display = 'none';
+            showQuestion();
+        }
+        
+        // Setup Fill in the Blank
+        function setupFillBlank() {
+            currentFillIndex = 0;
+            document.getElementById('fillResult').style.display = 'none';
+            showSentence();
+        }
+        
+        function showSentence() {
+            const sentenceData = fillSentences[currentFillIndex];
+            const fillBlankElement = document.getElementById('fillBlank');
+            const wordBankElement = document.getElementById('wordBank');
+            
+            // Build the sentence with blank
+            fillBlankElement.innerHTML = sentenceData.sentence.replace('___', '<span class="blank" id="targetBlank">___</span>');
+            
+            // Build the word bank
+            wordBankElement.innerHTML = '';
+            
+            // Shuffle the options
+            const shuffledOptions = [...sentenceData.options].sort(() => 0.5 - Math.random());
+            
+            shuffledOptions.forEach(word => {
+                const wordOption = document.createElement('div');
+                wordOption.className = 'word-option';
+                wordOption.textContent = word;
+                wordOption.dataset.word = word;
+                wordOption.addEventListener('click', () => {
+                    document.getElementById('targetBlank').textContent = word;
+                    wordOption.classList.add('used');
+                });
+                wordBankElement.appendChild(wordOption);
+            });
+        }
+        
+        function checkFillBlank() {
+            const targetBlank = document.getElementById('targetBlank');
+            const correctWord = fillSentences[currentFillIndex].word;
+            const resultElement = document.getElementById('fillResult');
+            
+            if (targetBlank.textContent === correctWord) {
+                resultElement.textContent = "Corretto! Ottimo lavoro!";
+                resultElement.className = "result correct";
+            } else {
+                resultElement.textContent = "Sbagliato. La parola corretta è: " + correctWord;
+                resultElement.className = "result incorrect";
+            }
+            
+            resultElement.style.display = 'block';
+        }
+        
+        function nextSentence() {
+            currentFillIndex = (currentFillIndex + 1) % fillSentences.length;
+            document.getElementById('fillResult').style.display = 'none';
+            showSentence();
+        }
+        
+        // Setup Order Game
+        function setupOrderGame() {
+            currentOrderIndex = 0;
+            document.getElementById('orderResult').style.display = 'none';
+            resetOrder();
+        }
+        
+        function showOrderSentence() {
+            const sentenceData = orderSentences[currentOrderIndex];
+            const wordOptionsElement = document.getElementById('wordOptions');
+            wordOptionsElement.innerHTML = '';
+            
+            // Reset selected words
+            selectedWords = [];
+            wordOptions = [...sentenceData.parts];
+            
+            // Shuffle the words
+            shuffleArray(wordOptions);
+            
+            // Show the shuffled words
+            wordOptions.forEach(word => {
+                const wordElement = document.createElement('div');
+                wordElement.className = 'word-option';
+                wordElement.textContent = word;
+                wordElement.addEventListener('click', () => selectWord(word));
+                wordOptionsElement.appendChild(wordElement);
+            });
+            
+            // Update the sentence builder area
+            updateSentenceBuilder();
+        }
+        
+        function selectWord(word) {
+            selectedWords.push(word);
+            updateSentenceBuilder();
+        }
+        
+        function updateSentenceBuilder() {
+            const sentenceBuilder = document.getElementById('sentenceBuilder');
+            sentenceBuilder.innerHTML = '';
+            
+            selectedWords.forEach(word => {
+                const bubble = document.createElement('div');
+                bubble.className = 'word-bubble';
+                bubble.textContent = word;
+                bubble.addEventListener('click', () => removeWord(word));
+                sentenceBuilder.appendChild(bubble);
+            });
+        }
+        
+        function removeWord(word) {
+            const index = selectedWords.indexOf(word);
+            if (index > -1) {
+                selectedWords.splice(index, 1);
+                updateSentenceBuilder();
+            }
+        }
+        
+        function resetOrder() {
+            selectedWords = [];
+            updateSentenceBuilder();
+            showOrderSentence();
+        }
+        
+        function checkOrder() {
+            const userSentence = selectedWords.join(' ');
+            const correctSentence = orderSentences[currentOrderIndex].correct;
+            const resultElement = document.getElementById('orderResult');
+            
+            if (userSentence === correctSentence) {
+                resultElement.textContent = "Corretto! La frase è perfetta!";
+                resultElement.className = "result correct";
+            } else {
+                resultElement.textContent = "Sbagliato. La frase corretta è: " + correctSentence;
+                resultElement.className = "result incorrect";
+            }
+            
+            resultElement.style.display = 'block';
+        }
+        
+        function nextOrderSentence() {
+            currentOrderIndex = (currentOrderIndex + 1) % orderSentences.length;
+            document.getElementById('orderResult').style.display = 'none';
+            resetOrder();
+        }
+        
+        // Function to shuffle array
+        function shuffleArray(array) {
+            for (let i = array.length - 1; i > 0; i--) {
+                const j = Math.floor(Math.random() * (i + 1));
+                [array[i], array[j]] = [array[j], array[i]];
+            }
+        }
+        
+        // Update progress bar
+        function updateProgress() {
+            progressFill.style.width = `${progress}%`;
+            progressText.textContent = `${progress}% Completato`;
+        }
+    </script>
+</body>
+</html>
